@@ -151,13 +151,25 @@ else {
         }
         },
         error: function(jqXHR, textStatus, errorThrown) {
-        //alert("Request failed: " + textStatus);
-        iziToast.error({
+         //alert("Request failed: " + textStatus);
+         if(jqXHR.responseJSON.title == "One or more validation errors occurred.")
+         {
+            for (const [key, value] of Object.entries(jqXHR.responseJSON.errors)) {
+            iziToast.error({
+               timeout: 10000,
+               title: 'Request failed',
+               message: value
+            });
+            }
+         }
+         else {
+         iziToast.error({
             timeout: 10000,
             title: 'Request failed',
             message: errorThrown
-        });
-        }
+         });
+      }
+     }
     })
     return false;
 }
