@@ -33,27 +33,33 @@ namespace AdminApi.Controllers
                 if (ModelState.IsValid)
                 {
                     Console.WriteLine(true);
-                }
                     bool flag = registerDBContext.registerDatas.Any(e => e.Email == user.Email);
-                if(!flag)
+                    if (!flag)
+                    {
+                        registerDBContext.registerDatas.Add(user);
+                        await registerDBContext.SaveChangesAsync();
+                        message = "User Addded Sucessfully";
+                        return Ok(new { message }); // return a 200 OK status code with message
+                    }
+                    else
+                    {
+                        message = "User already exists";
+                        return Ok(new { message }); // return a 200 OK status code with message
+                    }
+                }
+                else
                 {
-                    registerDBContext.registerDatas.Add(user);
-                    await registerDBContext.SaveChangesAsync();
-                    message = "User Addded Sucessfully";
-                    return Ok(new { message }); // return a 200 OK status code with message
-                    //return CreatedAtAction(nameof(GetregisterId), new { id = user.Id }, user);
+                    return user;
                 }
             }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            message = "User already exists";
-            return Ok(new { message }); // return a 200 OK status code with message
         }
 
         [HttpGet]
-        [Route("GetCarById/{id}")]
+        [Route("GetById/{id}")]
         public async Task<ActionResult<RegisterData>> GetregisterId(int id)
         {
             if (registerDBContext.registerDatas == null)
