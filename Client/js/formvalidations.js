@@ -48,7 +48,7 @@ debugger;
  }
  else if(document.getElementById("pincode").value.length < 3 || document.getElementById("pincode").value.length > 20)
  {
-    document.getElementById('spanpincode').innerHTML = "<strong>Length 3 to 40 allowed</strong>";
+    document.getElementById('spanpincode').innerHTML = "<strong>Length 3 to 20 allowed</strong>";
     return false;
  }
  else{
